@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>Урожай-Дорожай — ГИС-платформа управления агробизнесом</title>
-  
+
   <link rel="icon" type="image/svg+xml" href="../files/znak_guu 1.svg">
 
   <meta name="description" content="Интеллектуальная система мониторинга полей, управления земельным банком, агрономии и оптимизации цепочек поставок.">
 
+  <!-- og теги для превью ссылки — og:image должен быть png/jpg, svg не поддерживается -->
   <meta property="og:title" content="Урожай-Дорожай — Цифровой агроном">
   <meta property="og:description" content="Система автоматизации производственных агротехнологий и логистики.">
-  <meta property="og:image" content="../files/znak_guu 1.svg">
+  <meta property="og:image" content="../files/og-preview.png">
   <meta property="og:type" content="website">
 
   <link rel="stylesheet" href="../css/main.css">
@@ -20,41 +21,33 @@
 <body>
 
   <div class="app-container">
-    
-    <header class="main-header">
-      <div class="main-header__search-container" id="search-container">
-        <button class="main-header__search-btn" id="search-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
-        <input type="text" class="main-header__search-input" id="search-input" placeholder="Поиск по системе...">
-      </div>
-    </header>
 
-    <main class="main-content"></main>
-
+    <!-- sidebar идёт до header — нужно для работы css селектора ~ в main.css -->
     <aside class="sidebar" id="sidebar">
-      
+
+      <!-- клик по шапке сайдбара открывает/закрывает его -->
       <div class="sidebar__header" id="sidebar-toggle">
         <div class="sidebar__logo-wrapper">
-          <img src="../files/znak_guu 1.svg" alt="Логотип" class="sidebar__logo-icon">
+          <!-- alt="" т.к. декор. иконка, рядом есть текст -->
+          <img src="../files/znak_guu 1.svg" alt="" class="sidebar__logo-icon">
         </div>
-        <h1 class="sidebar__title">Урожай-Дорожай</h1>
+        <!-- h1 заменён на span — h1 д.б. один и описывать осн. контент страницы -->
+        <span class="sidebar__title">Урожай-Дорожай</span>
       </div>
 
       <nav class="sidebar__nav">
-        
+
+        <!--  агротехнологии -->
         <div class="sidebar__menu-group">
-          <button class="sidebar__menu-btn js-submenu-toggle">
+          <button class="sidebar__menu-btn js-submenu-toggle" aria-expanded="false">
             <div class="sidebar__icon-box">
-              <img src="../files/Home.svg" alt="Дом" class="sidebar__menu-icon">
+              <!-- alt="" т.к. кнопка уже описана текстом рядом -->
+              <img src="../files/Home.svg" alt="" class="sidebar__menu-icon">
             </div>
             <span class="sidebar__btn-text">Производственные агротехнологии</span>
           </button>
-          
-          <ul class="sidebar__submenu">
+
+          <ul class="sidebar__submenu" hidden>
             <li class="sidebar__submenu-item">
               <a href="#" class="sidebar__submenu-link">Модуль управления земельным банком</a>
             </li>
@@ -67,15 +60,16 @@
           </ul>
         </div>
 
+        <!--  логистика -->
         <div class="sidebar__menu-group">
-          <button class="sidebar__menu-btn js-submenu-toggle">
+          <button class="sidebar__menu-btn js-submenu-toggle" aria-expanded="false">
             <div class="sidebar__icon-box">
-              <img src="../files/Truck.svg" alt="Грузовик" class="sidebar__menu-icon">
+              <img src="../files/Truck.svg" alt="" class="sidebar__menu-icon">
             </div>
             <span class="sidebar__btn-text">Логистика и цепочки поставок</span>
           </button>
-          
-          <ul class="sidebar__submenu">
+
+          <ul class="sidebar__submenu" hidden>
             <li class="sidebar__submenu-item">
               <a href="#" class="sidebar__submenu-link">Система управления складом</a>
             </li>
@@ -87,6 +81,20 @@
 
       </nav>
     </aside>
+
+    <header class="main-header">
+      <div class="main-header__search-container" id="search-container">
+        <button class="main-header__search-btn" id="search-btn" aria-label="Поиск">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <input type="text" class="main-header__search-input" id="search-input" placeholder="Поиск по системе...">
+      </div>
+    </header>
+
+    <main class="main-content"></main>
 
   </div>
 

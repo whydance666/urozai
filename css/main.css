@@ -6,13 +6,14 @@
   padding: 0;
 }
 
+/* осн. переменные — цвета, размеры, скорость анимации */
 :root {
   --color-dark: #425252;
   --color-green-main: #9EC27A;
   --color-green-light: #BED6A5;
   --color-white: #FFFFFF;
   --color-search-bg: #4c5e5e;
-  
+
   --sidebar-collapsed-width: 148px;
   --sidebar-opened-width: 705px;
   --header-height: 80px;
@@ -34,6 +35,8 @@ body {
   overflow: hidden;
 }
 
+/*  header  */
+
 .main-header {
   position: absolute;
   top: 0;
@@ -41,9 +44,10 @@ body {
   width: 100%;
   height: var(--header-height);
   background-color: var(--color-white);
+  /* отступ слева = ширина свёрнутого сайдбара */
   padding: 0 40px 0 calc(var(--sidebar-collapsed-width) + 40px);
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   align-items: center;
   z-index: 50;
   border-bottom: 1px solid #e0e0e0;
@@ -51,24 +55,29 @@ body {
   transition: padding var(--transition-speed) ease;
 }
 
+/* sidebar до header в dom — поэтому ~ работает корректно */
 .sidebar--opened ~ .main-header {
   padding-left: calc(var(--sidebar-opened-width) + 40px);
 }
 
+/*  поиск  */
+
 .main-header__search-container {
   display: flex;
   align-items: center;
-  width: 48px; 
+  width: 48px;
   height: 48px;
   background-color: var(--color-dark);
   border-radius: 24px;
   padding: 0;
   overflow: hidden;
-  transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), background-color var(--transition-speed) ease;
+  transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+              background-color var(--transition-speed) ease;
 }
 
 .main-header__search-container--active {
-  width: 450px; 
+  /* min() ограничивает ширину на мобилке чтобы не вылезало за экран */
+  width: min(450px, calc(100vw - 120px));
   padding: 0 15px;
   background-color: var(--color-search-bg);
 }
@@ -107,6 +116,7 @@ body {
 .main-header__search-container--active .main-header__search-input {
   opacity: 1;
   visibility: visible;
+  /* небольшая задержка - появляется после раскрытия контейнера */
   transition: opacity var(--transition-speed) ease 0.1s;
 }
 
@@ -114,15 +124,19 @@ body {
   color: rgba(255,255,255,0.7);
 }
 
+/*  осн. контент  */
+
 .main-content {
   position: absolute;
   top: var(--header-height);
   left: 0;
   width: 100%;
   height: calc(100vh - var(--header-height));
-  background-color: #2b5c8f; 
+  background-color: #2b5c8f;
   z-index: 1;
 }
+
+/*  сайдбар  */
 
 .sidebar {
   position: absolute;
@@ -136,17 +150,17 @@ body {
   padding: 25px 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px; 
+  gap: 30px;
   overflow-x: hidden;
-  overflow-y: auto; 
-  transition: width var(--transition-speed) ease, background-color var(--transition-speed) ease;
+  overflow-y: auto;
+  transition: width var(--transition-speed) ease,
+              background-color var(--transition-speed) ease;
   z-index: 100;
   box-shadow: 5px 0 25px rgba(0,0,0,0.15);
 }
 
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
+/* кастомный скроллбар сайдбара */
+.sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-track {
   background: transparent;
   margin: 30px 0;
@@ -161,6 +175,8 @@ body {
   padding: 25px 50px;
 }
 
+/*  шапка сайдбара (лого + назв.)  */
+
 .sidebar__header {
   display: flex;
   align-items: center;
@@ -168,6 +184,7 @@ body {
   width: 100%;
   height: calc(var(--header-height) - 30px);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .sidebar--opened .sidebar__header {
@@ -182,7 +199,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
@@ -208,10 +224,12 @@ body {
   display: block;
 }
 
+/*  навигация  */
+
 .sidebar__nav {
   display: flex;
   flex-direction: column;
-  gap: 25px; 
+  gap: 25px;
 }
 
 .sidebar__menu-group {
@@ -231,7 +249,8 @@ body {
   cursor: pointer;
   padding: 0;
   overflow: hidden;
-  transition: background-color var(--transition-speed) ease, padding var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease,
+              padding var(--transition-speed) ease;
 }
 
 .sidebar--opened .sidebar__menu-btn {
@@ -252,7 +271,6 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.02);
   transition: background-color var(--transition-speed) ease;
 }
 
@@ -262,6 +280,7 @@ body {
   transition: transform var(--transition-speed) ease;
 }
 
+/* ховер только в свёрнутом состоянии */
 .sidebar:not(.sidebar--opened) .sidebar__menu-btn:hover .sidebar__menu-icon {
   transform: scale(1.1);
 }
@@ -282,26 +301,31 @@ body {
   display: inline-block;
 }
 
+/*  сабменю  */
+
 .sidebar__submenu {
   list-style: none;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
-  padding-left: 0; 
+  padding-left: 0;
   width: 100%;
-  max-height: 0; 
+  /* анимация раскрытия через max-height */
+  max-height: 0;
   opacity: 0;
   overflow: hidden;
-  transition: max-height var(--transition-speed) ease, opacity var(--transition-speed) ease;
+  transition: max-height var(--transition-speed) ease,
+              opacity var(--transition-speed) ease;
 }
 
 .sidebar__submenu--active {
   opacity: 1;
+  /* max-height проставляется через js при открытии */
 }
 
 .sidebar__submenu-item {
-  width: 85%; 
+  width: 85%;
   display: flex;
   justify-content: center;
 }
@@ -309,22 +333,31 @@ body {
 .sidebar__submenu-link {
   display: flex;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   width: 100%;
   font-size: 20px;
   color: var(--color-white);
   text-decoration: none;
   opacity: 0.9;
-  padding: 14px 35px; 
+  padding: 14px 35px;
   border-radius: 40px;
   background-color: transparent;
-  transition: background-color var(--transition-speed) ease, opacity var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease,
+              opacity var(--transition-speed) ease;
 }
 
 .sidebar__submenu-link:hover {
   background-color: var(--color-dark);
   opacity: 1;
 }
+
+/* видимый фокус для навигации с клавиатуры */
+.sidebar__submenu-link:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+/*  адаптив  */
 
 @media (max-width: 1024px) {
   :root {
@@ -355,14 +388,15 @@ body {
     padding: 15px 10px;
     gap: 20px;
   }
-  .sidebar__logo-wrapper, .sidebar__icon-box {
+  .sidebar__logo-wrapper,
+  .sidebar__icon-box {
     width: 65px;
     height: 65px;
     border-radius: 20px;
   }
   .sidebar__logo-icon { width: 45px; }
   .sidebar__menu-icon { width: 28px; height: 28px; }
-  .sidebar__submenu-item { width: 95%; } 
+  .sidebar__submenu-item { width: 95%; }
   .sidebar__title { font-size: 22px; }
   .sidebar__btn-text { font-size: 18px; }
   .sidebar__submenu-link { font-size: 16px; padding: 10px 20px; }
