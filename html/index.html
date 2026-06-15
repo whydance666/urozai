@@ -10,44 +10,40 @@
 
   <meta name="description" content="Интеллектуальная система мониторинга полей, управления земельным банком, агрономии и оптимизации цепочек поставок.">
 
-  <!-- og теги для превью ссылки — og:image должен быть png/jpg, svg не поддерживается -->
   <meta property="og:title" content="Урожай-Дорожай — Цифровой агроном">
   <meta property="og:description" content="Система автоматизации производственных агротехнологий и логистики.">
   <meta property="og:image" content="../files/og-preview.png">
   <meta property="og:type" content="website">
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/map_panel.css">
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- sidebar идёт до header — нужно для работы css селектора ~ в main.css -->
+    <!-- sidebar идёт до header  ~ -->
     <aside class="sidebar" id="sidebar">
 
-      <!-- клик по шапке сайдбара открывает/закрывает его -->
       <div class="sidebar__header" id="sidebar-toggle">
         <div class="sidebar__logo-wrapper">
-          <!-- alt="" т.к. декор. иконка, рядом есть текст -->
           <img src="../files/znak_guu 1.svg" alt="" class="sidebar__logo-icon">
         </div>
-        <!-- h1 заменён на span — h1 д.б. один и описывать осн. контент страницы -->
         <span class="sidebar__title">Урожай-Дорожай</span>
       </div>
 
       <nav class="sidebar__nav">
 
-        <!--  агротехнологии -->
+        <!-- агротехнологии -->
         <div class="sidebar__menu-group">
           <button class="sidebar__menu-btn js-submenu-toggle" aria-expanded="false">
             <div class="sidebar__icon-box">
-              <!-- alt="" т.к. кнопка уже описана текстом рядом -->
               <img src="../files/Home.svg" alt="" class="sidebar__menu-icon">
             </div>
             <span class="sidebar__btn-text">Производственные агротехнологии</span>
           </button>
 
-          <ul class="sidebar__submenu" hidden>
+          <ul class="sidebar__submenu">
             <li class="sidebar__submenu-item">
               <a href="#" class="sidebar__submenu-link">Модуль управления земельным банком</a>
             </li>
@@ -60,7 +56,7 @@
           </ul>
         </div>
 
-        <!--  логистика -->
+        <!-- логистика -->
         <div class="sidebar__menu-group">
           <button class="sidebar__menu-btn js-submenu-toggle" aria-expanded="false">
             <div class="sidebar__icon-box">
@@ -69,7 +65,7 @@
             <span class="sidebar__btn-text">Логистика и цепочки поставок</span>
           </button>
 
-          <ul class="sidebar__submenu" hidden>
+          <ul class="sidebar__submenu">
             <li class="sidebar__submenu-item">
               <a href="#" class="sidebar__submenu-link">Система управления складом</a>
             </li>
@@ -94,10 +90,107 @@
       </div>
     </header>
 
-    <main class="main-content"></main>
+    <main class="main-content" id="main-content">
+
+      <!--сама карта-->
+      <div id="map"></div>
+
+      <!--бургер-->
+      <button class="map-burger" id="map-burger" aria-label="Панель управления картой">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="map-panel" id="map-panel">
+
+        <div class="map-panel__tabs">
+          <button class="map-panel__tab map-panel__tab--active" data-tab="view">Вид</button>
+          <button class="map-panel__tab" data-tab="layers">Слои</button>
+          <button class="map-panel__tab" data-tab="sectors">Секторы</button>
+        </div>
+
+        <div class="map-panel__body" data-body="view">
+          <p class="map-panel__label">Тип карты</p>
+          <div class="map-panel__tile-grid">
+
+            <button class="map-tile-btn map-tile-btn--active" data-tile="osm">
+              <span class="map-tile-btn__icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/>
+                  <line x1="9" y1="3" x2="9" y2="18"/>
+                  <line x1="15" y1="6" x2="15" y2="21"/>
+                </svg>
+              </span>
+              <span>Схема</span>
+            </button>
+
+            <!--спутник-->
+            <button class="map-tile-btn" data-tile="satellite">
+              <span class="map-tile-btn__icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M6.3 6.3a8 8 0 0 0 0 11.4"/>
+                  <path d="M17.7 6.3a8 8 0 0 1 0 11.4"/>
+                  <path d="M3.5 3.5a14 14 0 0 0 0 17"/>
+                  <path d="M20.5 3.5a14 14 0 0 1 0 17"/>
+                </svg>
+              </span>
+              <span>Спутник</span>
+            </button>
+
+            <!-- рельеф -->
+            <button class="map-tile-btn" data-tile="relief">
+              <span class="map-tile-btn__icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 20l4.5-9 4 6 3-4.5 4 7.5H3z"/>
+                  <path d="M14 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"/>
+                </svg>
+              </span>
+              <span>Рельеф</span>
+            </button>
+
+          </div>
+        </div>
+
+        <div class="map-panel__body map-panel__body--hidden" data-body="layers">
+          <p class="map-panel__label">Активные слои</p>
+          <label class="map-layer-row">
+            <input type="checkbox" data-layer="fields" checked>
+            <span class="map-layer-row__dot" style="background:#527034"></span>
+            Поля
+          </label>
+          <label class="map-layer-row">
+            <input type="checkbox" data-layer="roads">
+            <span class="map-layer-row__dot" style="background:#f5a623"></span>
+            Дороги
+          </label>
+          <label class="map-layer-row">
+            <input type="checkbox" data-layer="water">
+            <span class="map-layer-row__dot" style="background:#4a90d9"></span>
+            Водоёмы
+          </label>
+          <label class="map-layer-row">
+            <input type="checkbox" data-layer="buildings">
+            <span class="map-layer-row__dot" style="background:#b0b0b0"></span>
+            Постройки
+          </label>
+        </div>
+
+        <div class="map-panel__body map-panel__body--hidden" data-body="sectors">
+          <p class="map-panel__label">Кликни по карте чтобы добавить сектор</p>
+          <ul class="map-sector-list" id="sector-list">
+            <li class="map-sector-list__empty">Секторы не выбраны</li>
+          </ul>
+          <button class="map-sector-clear" id="sector-clear">Очистить все</button>
+        </div>
+
+      </div>
+    </main>
 
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="../JS/main.js"></script>
+  <script src="../JS/map.js"></script>
+
 </body>
 </html>
